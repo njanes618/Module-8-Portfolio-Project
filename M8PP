@@ -1,0 +1,383 @@
+
+
+
+
+
+
+
+
+
+
+Module 8 Portfolio Project
+Nicole Janes
+Principles of Programming
+Colorado State University-Global Campus
+Lori Farr
+December 1, 2024
+
+
+
+
+
+
+
+
+
+
+
+
+MILESTONE 1
+PSEUDOCODE
+
+1.	Define the Item To Purchase class
+2.	Attributes: item name, item price, and item quantity.
+3.	Print item cost() method outputs the cost of an item.
+4.	Main Section:
+•	Prompt the user for the details of two items.
+•	Create two Item To Purchase objects using user input.
+•	Calculate and display the cost of each item and the total cost.
+
+SOURCE CODE
+
+>>> class ItemToPurchase:
+	def __init__(self):
+		self.item_name = "none"
+		self.item_price = 0.0
+		self.item_quantity = 0
+	def print_item_cost(self):
+		total_cost = self.item_price * self.item_quantity
+		print(f"{self.item_name} {self.item_quantity} @ ${int(self.item_price)} = ${int(total_cost)}")
+
+		
+>>> def get_item_from_user(item_number):
+	item = ItemToPurchase()
+	print(f"Item {item_number}")
+	item.item_name = input("Enter the item name:\n")
+	item.item_price = float(input("Enter the item price:\n"))
+	item.item_quantity = int(input("Enter the item quantity:\n"))
+	return item
+
+>>> item1 = get_item_from_user(1)
+>>> item2 = get_item_from_user(2)
+>>> total_cost = (item1.item_price * item1.item_quantity) + (item2.item_price * item2.item_quantity)
+>>> print("\nTOTAL COST")
+>>> item1.print_item_cost()
+>>> item2.print_item_cost()
+>>> print(f"\nTotal: ${int(total_cost)}")
+
+
+
+
+SCREENSHOTS
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+MILESTONE 2
+PSEUDOCODE
+1.	Shopping Cart Class
+2.	Attributes:
+•	Customer name: String, default "none"
+•	Current date: String, default "January 1, 2020"
+•	Cart items: List, default empty
+3.	Methods:
+•	Add item(item)
+•	Remove item(item name)
+•	Modify item(item)
+•	Get num items in cart()
+•	Get cost of cart()
+•	Print total()
+•	Print descriptions()
+4.	Main Function:
+•	Prompt for customer name and today's date.
+•	Instantiate Shopping Cart.
+•	Implement print menu(), which displays:
+•	a - Add item to cart.
+•	r - Remove item from cart.
+•	c - Change item quantity.
+•	i - Output items' descriptions.
+•	- Output shopping cart.
+•	q - Quit program.
+5.	Continue menu until user enters q.
+
+SOURCE CODE
+
+>>> class ShoppingCart:
+	def __init__(self, customer_name="none", current_date="January 1, 2020"):
+		self.customer_name = customer_name
+		self.current_date = current_date
+		self.cart_items = []
+	def add_item(self, item):
+		self.cart_items.append(item)
+	def remove_item(self, item_name):
+		found = False
+		for item in self.cart_items:
+			if item.name == item_name:
+				self.cart_items.remove(item)
+				found = True
+				break
+			if not found:
+				 print("Item not found in cart. Nothing removed.")
+	def modify_item(self, item):
+		found = False
+		for cart_item in self.cart_items:
+			if cart_item.name == item.name:
+				if item.description:
+					cart_item.description = item.description
+				if item.price:
+					cart_item.price = item.price
+				if item.quantity:
+					cart_item.quantity = item.quantity
+				found = True
+				break
+		if not found:
+			print("Item not found in cart. Nothing modified.")
+	def get_num_items_in_cart(self):
+		return sum(item.quantity for item in self.cart_items)
+	def get_cost_of_cart(self):
+		return sum(item.price * item.quantity for item in self.cart_items)
+	def print_total(self):
+		print(f"{self.customer_name}'s Shopping Cart - {self.current_date}")
+		total_items = self.get_num_items_in_cart()
+		print(f"Number of Items: {total_items}")
+		if total_items == 0:
+			print("SHOPPING CART IS EMPTY")
+		else:
+			for item in self.cart_items:
+				total_item_cost = item.price * item.quantity
+				print(f"{item.name} {item.quantity} @ ${item.price} = ${total_item_cost}")
+			print(f"Total: ${self.get_cost_of_cart()}")
+	def print_descriptions(self):
+		print(f"{self.customer_name}'s Shopping Cart - {self.current_date}")
+		print("Item Descriptions")
+		for item in self.cart_items:
+			print(f"{item.name}: {item.description}")
+
+			
+>>> def print_menu(cart):
+	while True:
+		print("\nMENU")
+		print("a - Add item to cart")
+		print("r - Remove item from cart")
+		print("c - Change item quantity")
+		print("i - Output items' descriptions")
+		print("o - Output shopping cart")
+		print("q - Quit")
+		choice = input("Choose an option:\n")
+		if choice == 'a':
+			name = input("Enter the item name:\n")
+			description = input("Enter the item description:\n")
+			price = int(input("Enter the item price:\n"))
+			quantity = int(input("Enter the item quantity:\n"))
+			new_item = ItemToPurchase(name, price, quantity, description)
+			cart.add_item(new_item)
+		elif choice == 'r':
+			name = input("Enter name of item to remove:\n")
+			cart.remove_item(name)
+		elif choice == 'c':
+			name = input("Enter the item name:\n")
+			description = input("Enter the item description:\n")
+			price = int(input("Enter the item price:\n"))
+			quantity = int(input("Enter the item quantity:\n"))
+			updated_item = ItemToPurchase(name, price, quantity, description)
+			cart.modify_item(updated_item)
+		elif choice == 'i':
+			print("OUTPUT ITEMS' DESCRIPTIONS")
+			cart.print_descriptions()
+		elif choice == 'o':
+			print("OUTPUT SHOPPING CART")
+			cart.print_total()
+		elif choice == 'q':
+			break
+		else:
+			print("Invalid choice. Please choose a valid option.")
+
+			
+>>> def main():
+	customer_name = input("Enter customer's name:\n")
+	current_date = input("Enter today's date:\n")
+	cart = ShoppingCart(customer_name, current_date)
+	print_menu(cart)
+
+>>> main()
+
+SCREENSHOTS
+
+       
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ADDITIONAL TASKS FOR THE FINAL PROJECT SUBMISSION: (STEPS 7-10)
+
+PSEUDOCODE
+
+1.	Prompt User Input (Ask for the customer's name and today's date. Create a Shopping Cart object)
+2.	Display Menu Options
+3.	Add an item to the cart
+4.	Remove an item from the cart
+5.	Change item quantity
+6.	Quit the program
+7.	Implement Menu Functions
+8.	Add Item
+9.	Remove Item
+10.	Change Quantity
+
+SOURCE CODE
+>>> class ShoppingCart:
+	def __init__(self, customer_name="none", current_date="January 1, 2020"):
+		self.customer_name = customer_name
+		self.current_date = current_date
+		self.cart_items = []
+	def add_item(self, item):
+		self.cart_items.append(item)
+	def remove_item(self, item_name):
+		for item in self.cart_items:
+			if item.name == item_name:
+				self.cart_items.remove(item)
+				return
+		print(f"Item '{item_name}' not found in cart.")
+	def modify_item(self, item_name, new_quantity):
+		for item in self.cart_items:
+			if item.name == item_name:
+				item.quantity = new_quantity
+				return
+		print(f"Item '{item_name}' not found in cart.")
+	def display_cart(self):
+		print(f"Customer Name: {self.customer_name}")
+		print(f"Today's Date: {self.current_date}")
+		print("Shopping Cart Contents:")
+		for item in self.cart_items:
+			print(f"{item.name} ({item.quantity} @ ${item.price} each)")
+
+			
+>>> class ItemToPurchase:
+	def __init__(self, name, description, price, quantity):
+		self.name = name
+		self.description = description
+		self.price = price
+		self.quantity = quantity
+
+		
+>>> def main():
+	customer_name = input("Enter customer's name: ")
+	current_date = input("Enter today's date: ")
+	print(f"Customer name: {customer_name}")
+	print(f"Today's date: {current_date}")
+	cart = ShoppingCart(customer_name, current_date)
+	while True:
+		print("\nMENU")
+		print("1. Add item to cart")
+		print("2. Remove item from cart")
+		print("3. Change item quantity")
+		print("4. Display cart")
+		print("5. Quit")
+		choice = input("Choose an option: ")
+		if choice == "1":
+			print("ADD ITEM TO CART")
+			name = input("Enter the item name: ")
+			description = input("Enter the item description: ")
+			price = float(input("Enter the item price: "))
+			quantity = int(input("Enter the item quantity: "))
+			item = ItemToPurchase(name, description, price, quantity)
+			cart.add_item(item)
+		elif choice == "2":
+			print("REMOVE ITEM FROM CART")
+			item_name = input("Enter name of item to remove: ")
+			cart.remove_item(item_name)
+		elif choice == "3":
+			print("CHANGE ITEM QUANTITY")
+			item_name = input("Enter the item name: ")
+			new_quantity = int(input("Enter the new quantity: "))
+			cart.modify_item(item_name, new_quantity)
+		elif choice == "4":
+			cart.display_cart()
+		elif choice == "5":
+			print("Exiting program. Goodbye!")
+			break
+		else:
+			print("Invalid option. Please try again.")
+
+			
+>>> if __name__ == "__main__":
+	main()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+SCREENSHOTS
+
+     
+
+
+GIT REPOSITORY
+
